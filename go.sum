@@ -2,3 +2,5 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/theplant/testingutils v0.0.0-20190603093022-26d8b4d95c61 h1:757/ruZNgTsOf5EkQBo0i3Bx/P2wgF5ljVkODeUX/uA=
 github.com/theplant/testingutils v0.0.0-20190603093022-26d8b4d95c61/go.mod h1:p22Q3Bg5ML+hdI3QSQkB/pZ2+CjfOnGugoQIoyE2Ub8=
+github.com/theplant/testingutils v0.0.2 h1:ryFb7J8NPnyMA4mdgBEf5ha3QUqWA9WVulWGyUbH2u4=
+github.com/theplant/testingutils v0.0.2/go.mod h1:nh7wj3YTJehg0PBHnPXtvqIqdnBUn0Gqb79JHnblFuc=

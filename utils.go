@@ -67,3 +67,74 @@ func MustString(root HTMLComponent, ctx context.Context) string {
 	}
 	return b.String()
 }
+
+// Simplify Simplifies components walking over nested HTMLComponents and calls cb if
+// component not is nil
+func Simplify(c HTMLComponent, cb func(HTMLComponent)) {
+	if c == nil {
+		return
+	}
+	switch t := c.(type) {
+	case HTMLComponents:
+		for _, c := range t {
+			Simplify(c, cb)
+		}
+	default:
+		cb(c)
+	}
+}
+
+func SimplifyE(c HTMLComponent, cb func(HTMLComponent) (err error)) (err error) {
+	if c == nil {
+		return
+	}
+	switch t := c.(type) {
+	case HTMLComponents:
+		for _, c := range t {
+			if err = SimplifyE(c, cb); err != nil {
+				return
+			}
+		}
+	default:
+		return cb(c)
+	}
+	return
+}
+
+func SimplifyItems(c HTMLComponent) (r HTMLComponents) {
+	Simplify(c, func(t HTMLComponent) {
+		r = append(r, t)
+	})
+	return
+}
+
+func SimplifyComponent(c HTMLComponent) HTMLComponent {
+	var r HTMLComponents
+	Simplify(c, func(t HTMLComponent) {
+		r = append(r, t)
+	})
+	switch len(r) {
+	case 0:
+		return nil
+	case 1:
+		return r[0]
+	default:
+		return r
+	}
+}
+
+func IsInline(c HTMLComponent) bool {
+	switch child := c.(type) {
+	case RawHTML:
+		return true
+	case *HTMLTagBuilder:
+		if child.IsInLine {
+			return true
+		}
+	case TagGetter:
+		if child.GetHTMLTagBuilder().IsInLine {
+			return true
+		}
+	}
+	return false
+}

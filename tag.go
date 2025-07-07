@@ -6,43 +6,86 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
+	"slices"
 	"strings"
 	"sync"
 )
 
-type tagAttr struct {
-	key   string
-	value interface{}
+type Attr struct {
+	Key   string
+	Value interface{}
+}
+
+func (a *Attr) Override(f func(old any) any) {
+	a.Value = f(a.Value)
+}
+
+type Attrs []*Attr
+
+func (a *Attrs) Remove(name string) {
+	var s Attrs
+	for _, v := range *a {
+		if v.Key == name {
+			continue
+		}
+		s = append(s, v)
+	}
+	*a = s
+}
+
+func (a *Attrs) RemoveMany(name ...string) {
+	var s Attrs
+	for _, v := range *a {
+		if slices.Contains(name, v.Key) {
+			continue
+		}
+		s = append(s, v)
+	}
+	*a = s
+}
+
+func (a Attrs) Get(name string) *Attr {
+	for _, v := range a {
+		if v.Key == name {
+			return v
+		}
+	}
+	return nil
 }
 
 type HTMLTagBuilder struct {
-	tag        string
-	omitEndTag bool
-	attrs      []*tagAttr
-	styles     []string
-	classNames []string
-	children   []HTMLComponent
+	TagName      string
+	IsOmitEndTag bool
+	Attrs        Attrs
+	Styles       []string
+	ClassNames   []string
+	Childs       []HTMLComponent
+	IsInLine     bool
 }
 
-func Tag(tag string) (r *HTMLTagBuilder) {
-	r = &HTMLTagBuilder{}
-
-	if r.attrs == nil {
-		r.attrs = []*tagAttr{}
+func Tag(tag string, child ...HTMLComponent) *HTMLTagBuilder {
+	return &HTMLTagBuilder{
+		Childs:   child,
+		TagName:  tag,
+		IsInLine: InlineTags[tag],
 	}
-
-	r.Tag(tag)
-
-	return
 }
 
 func (b *HTMLTagBuilder) Tag(v string) (r *HTMLTagBuilder) {
-	b.tag = v
+	b.TagName = v
+	if !b.IsInLine {
+		b.IsInLine = InlineTags[v]
+	}
+	return b
+}
+
+func (b *HTMLTagBuilder) Inline() (r *HTMLTagBuilder) {
+	b.IsInLine = true
 	return b
 }
 
 func (b *HTMLTagBuilder) OmitEndTag() (r *HTMLTagBuilder) {
-	b.omitEndTag = true
+	b.IsOmitEndTag = true
 	return b
 }
 
@@ -52,18 +95,22 @@ func (b *HTMLTagBuilder) Text(v string) (r *HTMLTagBuilder) {
 }
 
 func (b *HTMLTagBuilder) Children(comps ...HTMLComponent) (r *HTMLTagBuilder) {
-	b.children = comps
+	b.Childs = comps
 	return b
 }
 
+func (b *HTMLTagBuilder) HasChilds() bool {
+	return len(b.Childs) > 0
+}
+
 func (b *HTMLTagBuilder) SetAttr(k string, v interface{}) {
-	for _, at := range b.attrs {
-		if at.key == k {
-			at.value = v
+	for _, at := range b.Attrs {
+		if at.Key == k {
+			at.Value = v
 			return
 		}
 	}
-	b.attrs = append(b.attrs, &tagAttr{k, v})
+	b.Attrs = append(b.Attrs, &Attr{k, v})
 }
 
 func (b *HTMLTagBuilder) Attr(vs ...interface{}) (r *HTMLTagBuilder) {
@@ -75,7 +122,7 @@ func (b *HTMLTagBuilder) Attr(vs ...interface{}) (r *HTMLTagBuilder) {
 		if key, ok := vs[i].(string); ok {
 			b.SetAttr(key, vs[i+1])
 		} else {
-			panic(fmt.Sprintf("Attr key must be string, but was %#+v", vs[i]))
+			panic(fmt.Sprintf("Attr Key must be string, but was %#+v", vs[i]))
 		}
 	}
 	return b
@@ -89,6 +136,15 @@ func (b *HTMLTagBuilder) AttrIf(key, value interface{}, add bool) (r *HTMLTagBui
 	return b.Attr(key, value)
 }
 
+func (b *HTMLTagBuilder) GetAttr(key string) *Attr {
+	return b.Attrs.Get(key)
+}
+
+func (b *HTMLTagBuilder) RemoveAttr(key ...string) *HTMLTagBuilder {
+	b.Attrs.RemoveMany(key...)
+	return b
+}
+
 func (b *HTMLTagBuilder) Class(names ...string) (r *HTMLTagBuilder) {
 	b.addClass(names...)
 	return b
@@ -100,7 +156,7 @@ func (b *HTMLTagBuilder) addClass(names ...string) (r *HTMLTagBuilder) {
 		for _, in := range ins {
 			tin := strings.TrimSpace(in)
 			if len(tin) > 0 {
-				b.classNames = append(b.classNames, tin)
+				b.ClassNames = append(b.ClassNames, tin)
 			}
 		}
 	}
@@ -202,7 +258,7 @@ func (b *HTMLTagBuilder) StyleIf(v string, add bool) (r *HTMLTagBuilder) {
 
 func (b *HTMLTagBuilder) addStyle(v string) (r *HTMLTagBuilder) {
 	if len(v) > 0 {
-		b.styles = append(b.styles, v)
+		b.Styles = append(b.Styles, v)
 	}
 
 	return b
@@ -259,12 +315,12 @@ func (b *HTMLTagBuilder) Checked(v bool) (r *HTMLTagBuilder) {
 }
 
 func (b *HTMLTagBuilder) AppendChildren(c ...HTMLComponent) (r *HTMLTagBuilder) {
-	b.children = append(b.children, c...)
+	b.Childs = append(b.Childs, c...)
 	return b
 }
 
 func (b *HTMLTagBuilder) PrependChildren(c ...HTMLComponent) (r *HTMLTagBuilder) {
-	b.children = append(c, b.children...)
+	b.Childs = append(c, b.Childs...)
 	return b
 }
 
@@ -274,32 +330,25 @@ var bufPool = sync.Pool{
 	},
 }
 
-func (b *HTMLTagBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) {
-	class := strings.TrimSpace(strings.Join(b.classNames, " "))
+func (b *HTMLTagBuilder) WriteToContext(ctx *WriteContext) (err error) {
+	ctx.writed++
+
+	class := strings.TrimSpace(strings.Join(b.ClassNames, " "))
 	if len(class) > 0 {
 		b.Attr("class", class)
 	}
 
-	styles := strings.TrimSpace(strings.Join(b.styles, "; "))
+	styles := strings.TrimSpace(strings.Join(b.Styles, "; "))
 	if len(styles) > 0 {
 		b.Attr("style", styles+";")
 	}
 
-	// remove empty
-	var cs []HTMLComponent
-	for _, c := range b.children {
-		if c == nil {
-			continue
-		}
-		cs = append(cs, c)
-	}
-
 	var attrSegs []string
-	for _, at := range b.attrs {
+	for _, at := range b.Attrs {
 		var val string
 		var isBool bool
 		var boolVal bool
-		switch v := at.value.(type) {
+		switch v := at.Value.(type) {
 		case string:
 			val = v
 		case []byte:
@@ -326,9 +375,9 @@ func (b *HTMLTagBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) 
 			continue
 		}
 
-		seg := fmt.Sprintf(`%s='%s'`, escapeAttr(at.key), escapeAttr(val))
+		seg := fmt.Sprintf(`%s='%s'`, escapeAttr(at.Key), escapeAttr(val))
 		if isBool && boolVal {
-			seg = escapeAttr(at.key)
+			seg = escapeAttr(at.Key)
 		}
 		attrSegs = append(attrSegs, seg)
 	}
@@ -338,30 +387,30 @@ func (b *HTMLTagBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) 
 		attrStr = " " + strings.Join(attrSegs, " ")
 	}
 
+	if err = ctx.WriteString(fmt.Sprintf("<%s%s>", b.TagName, attrStr)); err != nil {
+		return
+	}
+
+	if !b.IsOmitEndTag {
+		if err = ctx.WriteChildren(b.Childs...); err != nil {
+			return
+		}
+		if err = ctx.WriteString(fmt.Sprintf("</%s>", b.TagName)); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func (b *HTMLTagBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) {
 	buf := bufPool.Get().(*bytes.Buffer)
 	defer bufPool.Put(buf)
 	buf.Reset()
 
-	newline := ""
+	if err = b.WriteToContext(NewWriteContext(NewWriter(buf), ctx)); err != nil {
+		return
+	}
 
-	if b.omitEndTag {
-		newline = "\n"
-	}
-	buf.WriteString(fmt.Sprintf("\n<%s%s>%s", b.tag, attrStr, newline))
-	if !b.omitEndTag {
-		if len(cs) > 0 {
-			// buf.WriteString("\n")
-			for _, c := range cs {
-				var child []byte
-				child, err = c.MarshalHTML(ctx)
-				if err != nil {
-					return
-				}
-				buf.Write(child)
-			}
-		}
-		buf.WriteString(fmt.Sprintf("</%s>\n", b.tag))
-	}
 	r = make([]byte, buf.Len())
 	copy(r, buf.Bytes())
 	return
@@ -378,6 +427,6 @@ func JSONString(v interface{}) (r string) {
 
 func escapeAttr(str string) (r string) {
 	r = strings.Replace(str, "'", "&#39;", -1)
-	//r = strings.Replace(r, "\n", "", -1)
+	// r = strings.Replace(r, "\n", "", -1)
 	return
 }

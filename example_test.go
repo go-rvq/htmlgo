@@ -21,7 +21,7 @@ func ExampleTag_01simplediv() {
 		Br(),
 	)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <div>123&lt;h1&gt;Hello, We write html in Go
 	// <br>
 	// </div>
@@ -41,7 +41,7 @@ func ExampleTag_02fullhtml() {
 		),
 	)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <!DOCTYPE html>
 	//
 	// <html>
@@ -80,7 +80,7 @@ func ExampleTag_03rawhtmlandcomponent() {
 		),
 	)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <ul>
 	// <li>
 	// <div class='userProfile'>
@@ -184,13 +184,13 @@ func ExampleTag_04newcomponentstyle() {
 	}).Selected("2")
 
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <select>
-	// <option value='1'>label 1</option>
+	// <option Value='1'>label 1</option>
 	//
-	// <option value='2' selected='true'>label 2</option>
+	// <option Value='2' selected='true'>label 2</option>
 	//
-	// <option value='3'>label 3</option>
+	// <option Value='3'>label 3</option>
 	// </select>
 }
 
@@ -216,7 +216,7 @@ func ExampleTag_05javascript() {
 	).Class("container")
 
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <div class='container'>
 	// <button id='hello'>Hello</button>
 	//
@@ -301,7 +301,7 @@ func ExampleTag_06httphandler() {
 
 	fmt.Println(w.Body.String())
 
-	//Output:
+	// Output:
 	// <!DOCTYPE html>
 	//
 	// <html>
@@ -340,7 +340,7 @@ func ExampleTag_07MutipleTypeAttrs() {
 			Attr("checked", false),
 	)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <div>
 	// <input name='username' type='checkbox' checked more-data='{"Name":"felix","Count":100}' max-length='10'>
 	//
@@ -356,7 +356,7 @@ func ExampleTag_08styles() {
 		StyleIf("background-color:red; border:1px solid red;", true).
 		StyleIf("color:blue", true)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <div style='background-color:red; border:1px solid red; color:blue;'></div>
 }
 
@@ -380,7 +380,7 @@ func ExampleTag_09iff() {
 		}),
 	)
 	Fprint(os.Stdout, comp, context.TODO())
-	//Output:
+	// Output:
 	// <div>
 	// <div>No person named Leon</div>
 	// </div>
