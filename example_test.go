@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"os"
 
-	. "github.com/theplant/htmlgo"
+	. "github.com/go-rvq/htmlgo"
 )
 
 /*

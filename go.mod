@@ -1,4 +1,4 @@
-module github.com/theplant/htmlgo
+module github.com/go-rvq/htmlgo
 
 go 1.22
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	. "github.com/theplant/htmlgo"
+	. "github.com/go-rvq/htmlgo"
 	"github.com/theplant/testingutils"
 )
 

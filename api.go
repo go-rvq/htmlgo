@@ -1,16 +1,14 @@
 /*
-
 ## htmlgo
 
 Type safe and modularize way to generate html on server side.
-Download the package with `go get -v github.com/theplant/htmlgo` and import the package with `.` gives you simpler code:
+Download the package with `go get -v github.com/go-rvq/htmlgo` and import the package with `.` gives you simpler code:
 
 	import (
-		. "github.com/theplant/htmlgo"
+		. "github.com/go-rvq/htmlgo"
 	)
 
-also checkout full API documentation at: https://godoc.org/github.com/theplant/htmlgo
-
+also checkout full API documentation at: https://godoc.org/github.com/go-rvq/htmlgo
 */
 package htmlgo
 
