@@ -24,7 +24,7 @@ func (f ComponentFunc) Write(ctx *Context) error {
 
 type MutableAttrHTMLComponent interface {
 	HTMLComponent
-	SetAttr(k string, v interface{})
+	SetAttr(k string, v any)
 }
 
 type ContainerHTMLComponent interface {
@@ -35,3 +35,6 @@ type ContainerHTMLComponent interface {
 	GetChildren() HTMLComponents
 	SetChildren(HTMLComponents)
 }
+
+// SafeAttr is a special attr value for unescaped attr value
+type SafeAttr string

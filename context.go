@@ -12,7 +12,7 @@ type Context struct {
 	writed  int
 }
 
-func (ctx *Context) Value(name any) interface{} {
+func (ctx *Context) Value(name any) any {
 	return ctx.Context.Value(name)
 }
 

@@ -20,7 +20,7 @@ func Text(text string) HTMLComponent {
 	return RawHTML(html.EscapeString(text))
 }
 
-func Textf(format string, a ...interface{}) HTMLComponent {
+func Textf(format string, a ...any) HTMLComponent {
 	return Text(fmt.Sprintf(format, a...))
 }
 
@@ -162,7 +162,7 @@ func IsInline(c HTMLComponent) bool {
 	return false
 }
 
-func JSONString(v interface{}) (r string) {
+func JSONString(v any) (r string) {
 	b, err := json.Marshal(v)
 	if err != nil {
 		panic(err)

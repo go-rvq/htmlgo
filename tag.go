@@ -9,7 +9,7 @@ import (
 
 type Attr struct {
 	Key   string
-	Value interface{}
+	Value any
 }
 
 func (a *Attr) Override(f func(old any) any) {
@@ -115,7 +115,7 @@ func (b *HTMLTagBuilder) HasChilds() bool {
 	return len(b.Childs) > 0
 }
 
-func (b *HTMLTagBuilder) SetAttr(k string, v interface{}) {
+func (b *HTMLTagBuilder) SetAttr(k string, v any) {
 	for _, at := range b.Attrs {
 		if at.Key == k {
 			at.Value = v
@@ -125,7 +125,7 @@ func (b *HTMLTagBuilder) SetAttr(k string, v interface{}) {
 	b.Attrs = append(b.Attrs, &Attr{k, v})
 }
 
-func (b *HTMLTagBuilder) Attr(vs ...interface{}) (r *HTMLTagBuilder) {
+func (b *HTMLTagBuilder) Attr(vs ...any) (r *HTMLTagBuilder) {
 	if len(vs)%2 != 0 {
 		vs = append(vs, "")
 	}
@@ -140,7 +140,7 @@ func (b *HTMLTagBuilder) Attr(vs ...interface{}) (r *HTMLTagBuilder) {
 	return b
 }
 
-func (b *HTMLTagBuilder) AttrIf(key, value interface{}, add bool) (r *HTMLTagBuilder) {
+func (b *HTMLTagBuilder) AttrIf(key, value any, add bool) (r *HTMLTagBuilder) {
 	if !add {
 		return b
 	}
@@ -355,6 +355,9 @@ func (b *HTMLTagBuilder) Write(ctx *Context) (err error) {
 		var isBool bool
 		var boolVal bool
 		switch v := at.Value.(type) {
+		case SafeAttr:
+			attrSegs = append(attrSegs, fmt.Sprintf(`%s=%s`, EscapeAttr(at.Key), v))
+			continue
 		case string:
 			val = v
 		case []byte:

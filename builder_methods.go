@@ -43,15 +43,15 @@ func (t *TagBuilder[T]) Text(v string) T {
 	return t.DOT
 }
 
-func (t *TagBuilder[T]) SetAttr(k string, v interface{}) T {
+func (t *TagBuilder[T]) SetAttr(k string, v any) T {
 	t.HTMLTag.SetAttr(k, v)
 	return t.DOT
 }
-func (t *TagBuilder[T]) Attr(vs ...interface{}) T {
+func (t *TagBuilder[T]) Attr(vs ...any) T {
 	t.HTMLTag.Attr(vs...)
 	return t.DOT
 }
-func (t *TagBuilder[T]) AttrIf(key, value interface{}, add bool) T {
+func (t *TagBuilder[T]) AttrIf(key, value any, add bool) T {
 	t.HTMLTag.AttrIf(key, value, add)
 	return t.DOT
 }

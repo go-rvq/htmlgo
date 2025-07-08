@@ -420,3 +420,21 @@ func ExampleTag_iff() {
 	//	<div>No person named Leon</div>
 	// </div>
 }
+
+/*
+An example show how to use Tag with supported attr values
+*/
+func ExampleTag_withAttrs() {
+	comp := Div().
+		Attr("true-attr", true).
+		Attr("false-attr", false).
+		Attr("int-attr", 1).
+		Attr("float-attr", 123.456).
+		Attr("str-attr", "the string value").
+		Attr("safe-str-value", SafeAttr(`{the shafe value}`)).
+		Attr("byte-attr", []byte("byte value")).
+		Attr("rune-attr", []rune("rune value"))
+	Fprint(os.Stdout, comp, context.TODO())
+	// Output:
+	// <div true-attr int-attr='1' float-attr='123.456000' str-attr='the string value' safe-str-value={the shafe value} byte-attr='byte value' rune-attr='rune value'></div>
+}
