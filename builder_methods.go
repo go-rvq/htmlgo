@@ -71,8 +71,8 @@ func (t *TagBuilder[T]) Data(vs ...string) T {
 	return t.DOT
 }
 
-func (t *TagBuilder[T]) Id(v string) T {
-	t.HTMLTag.Id(v)
+func (t *TagBuilder[T]) ID(v string) T {
+	t.HTMLTag.ID(v)
 	return t.DOT
 }
 

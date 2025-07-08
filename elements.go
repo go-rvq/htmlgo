@@ -1,49 +1,49 @@
 package htmlgo
 
-//     "a": HTMLAnchorElement;
+// A "a": HTMLAnchorElement;
 func A(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("a").Children(children...)
+	return Tag("a", children...)
 }
 
-//     "abbr": HTMLElement;
+// Abbr "abbr": HTMLElement;
 func Abbr(text string) (r *HTMLTagBuilder) {
 	return Tag("abbr").Text(text)
 }
 
-//     "address": HTMLElement;
+// Address "address": HTMLElement;
 func Address(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("address").Children(children...)
+	return Tag("address", children...)
 }
 
 //     "applet": HTMLAppletElement;
 // Not support
 
-//     "area": HTMLAreaElement;
+// Area "area": HTMLAreaElement;
 func Area() (r *HTMLTagBuilder) {
 	return Tag("area").OmitEndTag()
 }
 
-//     "article": HTMLElement;
+// Article "article": HTMLElement;
 func Article(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("article").Children(children...)
+	return Tag("article", children...)
 }
 
-//     "aside": HTMLElement;
+// Aside "aside": HTMLElement;
 func Aside(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("aside").Children(children...)
+	return Tag("aside", children...)
 }
 
-//     "audio": HTMLAudioElement;
+// Audio "audio": HTMLAudioElement;
 func Audio(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("audio").Children(children...)
+	return Tag("audio", children...)
 }
 
-//     "b": HTMLElement;
+// B "b": HTMLElement;
 func B(text string) (r *HTMLTagBuilder) {
 	return Tag("b").Text(text)
 }
 
-//     "base": HTMLBaseElement;
+// Base "base": HTMLBaseElement;
 func Base() (r *HTMLTagBuilder) {
 	return Tag("base").OmitEndTag()
 }
@@ -51,82 +51,82 @@ func Base() (r *HTMLTagBuilder) {
 //     "basefont": HTMLBaseFontElement;
 // Not Support
 
-//     "bdi": HTMLElement;
+// Bdi "bdi": HTMLElement;
 func Bdi(text string) (r *HTMLTagBuilder) {
 	return Tag("bdi").Text(text)
 }
 
-//     "bdo": HTMLElement;
+// Bdo "bdo": HTMLElement;
 func Bdo(text string) (r *HTMLTagBuilder) {
 	return Tag("bdo").Text(text)
 }
 
-//     "blockquote": HTMLQuoteElement;
+// Blockquote "blockquote": HTMLQuoteElement;
 func Blockquote(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("blockquote").Children(children...)
+	return Tag("blockquote", children...)
 }
 
-//     "body": HTMLBodyElement;
+// Body "body": HTMLBodyElement;
 func Body(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("body").Children(children...)
+	return Tag("body", children...)
 }
 
-//     "br": HTMLBRElement;
+// Br "br": HTMLBRElement;
 func Br() (r *HTMLTagBuilder) {
 	return Tag("br").OmitEndTag()
 }
 
-//     "button": HTMLButtonElement;
+// Button "button": HTMLButtonElement;
 func Button(label string) (r *HTMLTagBuilder) {
 	return Tag("button").Text(label)
 }
 
-//     "canvas": HTMLCanvasElement;
+// Canvas "canvas": HTMLCanvasElement;
 func Canvas(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("canvas").Children(children...)
+	return Tag("canvas", children...)
 }
 
-//     "caption": HTMLTableCaptionElement;
+// Caption "caption": HTMLTableCaptionElement;
 func Caption(text string) (r *HTMLTagBuilder) {
 	return Tag("caption").Text(text)
 }
 
-//     "cite": HTMLElement;
+// Cite "cite": HTMLElement;
 func Cite(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("cite").Children(children...)
+	return Tag("cite", children...)
 }
 
-//     "code": HTMLElement;
+// Code "code": HTMLElement;
 func Code(text string) (r *HTMLTagBuilder) {
 	return Tag("code").Text(text)
 }
 
-//     "col": HTMLTableColElement;
+// Col "col": HTMLTableColElement;
 func Col() (r *HTMLTagBuilder) {
 	return Tag("col").OmitEndTag()
 }
 
-//     "colgroup": HTMLTableColElement;
+// Colgroup "colgroup": HTMLTableColElement;
 func Colgroup(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("colgroup").Children(children...)
+	return Tag("colgroup", children...)
 }
 
-//     "data": HTMLDataElement;
+// Data "data": HTMLDataElement;
 func Data(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("data").Children(children...)
+	return Tag("data", children...)
 }
 
-//     "datalist": HTMLDataListElement;
+// Datalist "datalist": HTMLDataListElement;
 func Datalist(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("datalist").Children(children...)
+	return Tag("datalist", children...)
 }
 
-//     "dd": HTMLElement;
+// Dd "dd": HTMLElement;
 func Dd(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("dd").Children(children...)
+	return Tag("dd", children...)
 }
 
-//     "del": HTMLModElement;
+// Del "del": HTMLModElement;
 func Del(text string) (r *HTMLTagBuilder) {
 	return Tag("del").Text(text)
 }
@@ -134,73 +134,73 @@ func Del(text string) (r *HTMLTagBuilder) {
 //     "details": HTMLDetailsElement;
 
 func Details(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("details").Children(children...)
+	return Tag("details", children...)
 }
 
-//     "dfn": HTMLElement;
+// Dfn "dfn": HTMLElement;
 func Dfn(text string) (r *HTMLTagBuilder) {
 	return Tag("dfn").Text(text)
 }
 
-//     "dialog": HTMLDialogElement;
+// Dialog "dialog": HTMLDialogElement;
 func Dialog(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("dialog").Children(children...)
+	return Tag("dialog", children...)
 }
 
 //     "dir": HTMLDirectoryElement;
 // Not Support
 
-//     "div": HTMLDivElement;
+// Div "div": HTMLDivElement;
 func Div(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("div").Children(children...)
+	return Tag("div", children...)
 }
 
-//     "dl": HTMLDListElement;
+// Dl "dl": HTMLDListElement;
 func Dl(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("dl").Children(children...)
+	return Tag("dl", children...)
 }
 
-//     "dt": HTMLElement;
+// Dt "dt": HTMLElement;
 func Dt(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("dt").Children(children...)
+	return Tag("dt", children...)
 }
 
-//     "em": HTMLElement;
+// Em "em": HTMLElement;
 func Em(text string) (r *HTMLTagBuilder) {
 	return Tag("em").Text(text)
 }
 
-//     "embed": HTMLEmbedElement;
+// Embed "embed": HTMLEmbedElement;
 func Embed() (r *HTMLTagBuilder) {
 	return Tag("embed").OmitEndTag()
 }
 
-//     "fieldset": HTMLFieldSetElement;
+// Fieldset "fieldset": HTMLFieldSetElement;
 func Fieldset(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("fieldset").Children(children...)
+	return Tag("fieldset", children...)
 }
 
-//     "figcaption": HTMLElement;
+// Figcaption "figcaption": HTMLElement;
 func Figcaption(text string) (r *HTMLTagBuilder) {
 	return Tag("figcaption").Text(text)
 }
 
-//     "figure": HTMLElement;
+// Figure "figure": HTMLElement;
 func Figure(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("figure").Children(children...)
+	return Tag("figure", children...)
 }
 
 //     "font": HTMLFontElement;
 // Not Support
 
-//     "footer": HTMLElement;
+// Footer "footer": HTMLElement;
 func Footer(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("footer").Children(children...)
+	return Tag("footer", children...)
 }
 
-//     "form": HTMLFormElement;
+// Form "form": HTMLFormElement;
 func Form(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("form").Children(children...)
+	return Tag("form", children...)
 }
 
 //     "frame": HTMLFrameElement;
@@ -209,32 +209,32 @@ func Form(children ...HTMLComponent) (r *HTMLTagBuilder) {
 //     "frameset": HTMLFrameSetElement;
 // Not Support
 
-//     "h1": HTMLHeadingElement;
+// H1 "h1": HTMLHeadingElement;
 func H1(text string) (r *HTMLTagBuilder) {
 	return Tag("h1").Text(text)
 }
 
-//     "h2": HTMLHeadingElement;
+// H2 "h2": HTMLHeadingElement;
 func H2(text string) (r *HTMLTagBuilder) {
 	return Tag("h2").Text(text)
 }
 
-//     "h3": HTMLHeadingElement;
+// H3 "h3": HTMLHeadingElement;
 func H3(text string) (r *HTMLTagBuilder) {
 	return Tag("h3").Text(text)
 }
 
-//     "h4": HTMLHeadingElement;
+// H4 "h4": HTMLHeadingElement;
 func H4(text string) (r *HTMLTagBuilder) {
 	return Tag("h4").Text(text)
 }
 
-//     "h5": HTMLHeadingElement;
+// H5 "h5": HTMLHeadingElement;
 func H5(text string) (r *HTMLTagBuilder) {
 	return Tag("h5").Text(text)
 }
 
-//     "h6": HTMLHeadingElement;
+// H6 "h6": HTMLHeadingElement;
 func H6(text string) (r *HTMLTagBuilder) {
 	return Tag("h6").Text(text)
 }
@@ -242,43 +242,43 @@ func H6(text string) (r *HTMLTagBuilder) {
 //     "head": HTMLHeadElement;
 
 func Head(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("head").Children(children...)
+	return Tag("head", children...)
 }
 
-//     "header": HTMLElement;
+// Header "header": HTMLElement;
 func Header(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("header").Children(children...)
+	return Tag("header", children...)
 }
 
-//     "hgroup": HTMLElement;
+// Hgroup "hgroup": HTMLElement;
 func Hgroup(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("hgroup").Children(children...)
+	return Tag("hgroup", children...)
 }
 
-//     "hr": HTMLHRElement;
+// Hr "hr": HTMLHRElement;
 func Hr() (r *HTMLTagBuilder) {
 	return Tag("hr").OmitEndTag()
 }
 
-//     "html": HTMLHtmlElement;
+// HTML "html": HTMLHtmlElement;
 func HTML(children ...HTMLComponent) (r HTMLComponent) {
 	return HTMLComponents{
-		RawHTML("<!DOCTYPE html>\n"),
-		Tag("html").Children(children...),
+		RawHTML("<!DOCTYPE html>"),
+		Tag("html", children...),
 	}
 }
 
-//     "i": HTMLElement;
+// I "i": HTMLElement;
 func I(text string) (r *HTMLTagBuilder) {
 	return Tag("i").Text(text)
 }
 
-//     "iframe": HTMLIFrameElement;
+// Iframe "iframe": HTMLIFrameElement;
 func Iframe(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("iframe").Children(children...)
+	return Tag("iframe", children...)
 }
 
-//     "img": HTMLImageElement;
+// Img "img": HTMLImageElement;
 func Img(src string) (r *HTMLTagBuilder) {
 	return Tag("img").OmitEndTag().Attr("src", src)
 }
@@ -289,47 +289,47 @@ func Input(name string) (r *HTMLTagBuilder) {
 	return Tag("input").OmitEndTag().Attr("name", name)
 }
 
-//     "ins": HTMLModElement;
+// Ins "ins": HTMLModElement;
 func Ins(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("ins").Children(children...)
+	return Tag("ins", children...)
 }
 
-//     "kbd": HTMLElement;
+// Kbd "kbd": HTMLElement;
 func Kbd(text string) (r *HTMLTagBuilder) {
 	return Tag("kbd").Text(text)
 }
 
-//     "label": HTMLLabelElement;
+// Label "label": HTMLLabelElement;
 func Label(text string) (r *HTMLTagBuilder) {
 	return Tag("label").Text(text)
 }
 
-//     "legend": HTMLLegendElement;
+// Legend "legend": HTMLLegendElement;
 func Legend(text string) (r *HTMLTagBuilder) {
 	return Tag("legend").Text(text)
 }
 
-//     "li": HTMLLIElement;
+// Li "li": HTMLLIElement;
 func Li(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("li").Children(children...)
+	return Tag("li", children...)
 }
 
-//     "link": HTMLLinkElement;
+// Link "link": HTMLLinkElement;
 func Link(href string) (r *HTMLTagBuilder) {
 	return Tag("link").OmitEndTag().Attr("href", href)
 }
 
-//     "main": HTMLElement;
+// Main "main": HTMLElement;
 func Main(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("main").Children(children...)
+	return Tag("main", children...)
 }
 
-//     "map": HTMLMapElement;
+// Map "map": HTMLMapElement;
 func Map(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("map").Children(children...)
+	return Tag("map", children...)
 }
 
-//     "mark": HTMLElement;
+// Mark "mark": HTMLElement;
 func Mark(text string) (r *HTMLTagBuilder) {
 	return Tag("mark").Text(text)
 }
@@ -337,9 +337,9 @@ func Mark(text string) (r *HTMLTagBuilder) {
 //     "marquee": HTMLMarqueeElement;
 // Not Support
 
-//     "menu": HTMLMenuElement;
+// Menu "menu": HTMLMenuElement;
 func Menu(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("menu").Children(children...)
+	return Tag("menu", children...)
 }
 
 //     "meta": HTMLMetaElement;
@@ -348,92 +348,92 @@ func Meta() (r *HTMLTagBuilder) {
 	return Tag("meta").OmitEndTag()
 }
 
-//     "meter": HTMLMeterElement;
+// Meter "meter": HTMLMeterElement;
 func Meter(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("meter").Children(children...)
+	return Tag("meter", children...)
 }
 
-//     "nav": HTMLElement;
+// Nav "nav": HTMLElement;
 func Nav(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("nav").Children(children...)
+	return Tag("nav", children...)
 }
 
-//     "noscript": HTMLElement;
+// Noscript "noscript": HTMLElement;
 func Noscript(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("noscript").Children(children...)
+	return Tag("noscript", children...)
 }
 
-//     "object": HTMLObjectElement;
+// Object "object": HTMLObjectElement;
 func Object(data string) (r *HTMLTagBuilder) {
 	return Tag("object").Attr("data", data)
 }
 
-//     "ol": HTMLOListElement;
+// Ol "ol": HTMLOListElement;
 func Ol(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("ol").Children(children...)
+	return Tag("ol", children...)
 }
 
-//     "optgroup": HTMLOptGroupElement;
+// Optgroup "optgroup": HTMLOptGroupElement;
 func Optgroup(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("optgroup").Children(children...)
+	return Tag("optgroup", children...)
 }
 
-//     "option": HTMLOptionElement;
+// Option "option": HTMLOptionElement;
 func Option(text string) (r *HTMLTagBuilder) {
 	return Tag("option").Text(text)
 }
 
-//     "output": HTMLOutputElement;
+// Output "output": HTMLOutputElement;
 func Output(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("output").Children(children...)
+	return Tag("output", children...)
 }
 
-//     "p": HTMLParagraphElement;
+// P "p": HTMLParagraphElement;
 func P(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("p").Children(children...)
+	return Tag("p", children...)
 }
 
-//     "param": HTMLParamElement;
+// Param "param": HTMLParamElement;
 func Param(name string) (r *HTMLTagBuilder) {
 	return Tag("param").OmitEndTag().Attr("name", name)
 }
 
-//     "picture": HTMLPictureElement;
+// Picture "picture": HTMLPictureElement;
 func Picture(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("picture").Children(children...)
+	return Tag("picture", children...)
 }
 
-//     "pre": HTMLPreElement;
+// Pre "pre": HTMLPreElement;
 func Pre(text string) (r *HTMLTagBuilder) {
 	return Tag("pre").Text(text)
 }
 
-//     "progress": HTMLProgressElement;
+// Progress "progress": HTMLProgressElement;
 func Progress(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("progress").Children(children...)
+	return Tag("progress", children...)
 }
 
-//     "q": HTMLQuoteElement;
+// Q "q": HTMLQuoteElement;
 func Q(text string) (r *HTMLTagBuilder) {
 	return Tag("q").Text(text)
 }
 
-//     "rp": HTMLElement;
+// Rp "rp": HTMLElement;
 func Rp(text string) (r *HTMLTagBuilder) {
 	return Tag("rp").Text(text)
 }
 
-//     "rt": HTMLElement;
+// Rt "rt": HTMLElement;
 func Rt(text string) (r *HTMLTagBuilder) {
 	return Tag("rt").Text(text)
 }
 
-//     "ruby": HTMLElement;
+// Ruby "ruby": HTMLElement;
 func Ruby(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("ruby").Children(children...)
+	return Tag("ruby", children...)
 }
 
-//     "s": HTMLElement;
+// S "s": HTMLElement;
 func S(text string) (r *HTMLTagBuilder) {
 	return Tag("s").Text(text)
 }
@@ -441,154 +441,159 @@ func S(text string) (r *HTMLTagBuilder) {
 //     "samp": HTMLElement;
 
 func Samp(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("samp").Children(children...)
+	return Tag("samp", children...)
 }
 
-//     "script": HTMLScriptElement;
+// Script "script": HTMLScriptElement;
 func Script(script string) (r *HTMLTagBuilder) {
 	return Tag("script").
 		Attr("type", "text/javascript").
 		Children(RawHTML(script))
 }
 
-//     "section": HTMLElement;
+// Section "section": HTMLElement;
 func Section(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("section").Children(children...)
+	return Tag("section", children...)
 }
 
-//     "select": HTMLSelectElement;
+// Select "select": HTMLSelectElement;
 func Select(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("select").Children(children...)
+	return Tag("select", children...)
 }
 
-//     "slot": HTMLSlotElement;
+// Slot "slot": HTMLSlotElement;
 func Slot(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("slot").Children(children...)
+	return Tag("slot", children...)
 }
 
-//     "small": HTMLElement;
+// Small "small": HTMLElement;
 func Small(text string) (r *HTMLTagBuilder) {
 	return Tag("small").Text(text)
 }
 
-//     "source": HTMLSourceElement;
+// Source "source": HTMLSourceElement;
 func Source(src string) (r *HTMLTagBuilder) {
 	return Tag("source").OmitEndTag().Attr("src", src)
 }
 
-//     "span": HTMLSpanElement;
+// Span "span": HTMLSpanElement;
 func Span(text string) (r *HTMLTagBuilder) {
 	return Tag("span").Text(text)
 }
 
-//     "strong": HTMLElement;
+// Strong "strong": HTMLElement;
 func Strong(text string) (r *HTMLTagBuilder) {
 	return Tag("strong").Text(text)
 }
 
-//     "style": HTMLStyleElement;
+// Style "style": HTMLStyleElement;
 func Style(style string) (r *HTMLTagBuilder) {
 	return Tag("style").
 		Attr("type", "text/css").
 		Children(RawHTML(style))
 }
 
-//     "sub": HTMLElement;
+// Sub "sub": HTMLElement;
 func Sub(text string) (r *HTMLTagBuilder) {
 	return Tag("sub").Text(text)
 }
 
-//     "summary": HTMLElement;
+// Summary "summary": HTMLElement;
 func Summary(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("summary").Children(children...)
+	return Tag("summary", children...)
 }
 
-//     "sup": HTMLElement;
+// Sup "sup": HTMLElement;
 func Sup(text string) (r *HTMLTagBuilder) {
 	return Tag("sup").Text(text)
 }
 
-//     "table": HTMLTableElement;
+// Table "table": HTMLTableElement;
 func Table(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("table").Children(children...)
+	return Tag("table", children...)
 }
 
-//     "tbody": HTMLTableSectionElement;
+// Tbody "tbody": HTMLTableSectionElement;
 func Tbody(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("tbody").Children(children...)
+	return Tag("tbody", children...)
 }
 
-//     "td": HTMLTableDataCellElement;
+// Td "td": HTMLTableDataCellElement;
 func Td(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("td").Children(children...)
+	return Tag("td", children...)
 }
 
-//     "template": HTMLTemplateElement;
+// Template "template": HTMLTemplateElement;
 func Template(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("template").Children(children...)
+	return Tag("template", children...)
 }
 
-//     "textarea": HTMLTextAreaElement;
+// Textarea "textarea": HTMLTextAreaElement;
 func Textarea(text string) (r *HTMLTagBuilder) {
 	return Tag("textarea").Text(text)
 }
 
-//     "tfoot": HTMLTableSectionElement;
+// Tfoot "tfoot": HTMLTableSectionElement;
 func Tfoot(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("tfoot").Children(children...)
+	return Tag("tfoot", children...)
 }
 
-//     "th": HTMLTableHeaderCellElement;
+// Th "th": HTMLTableHeaderCellElement;
 func Th(text string) (r *HTMLTagBuilder) {
 	return Tag("th").Text(text)
 }
 
-//     "thead": HTMLTableSectionElement;
+// Thead "thead": HTMLTableSectionElement;
 func Thead(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("thead").Children(children...)
+	return Tag("thead", children...)
 }
 
-//     "time": HTMLTimeElement;
+// Time "time": HTMLTimeElement;
 func Time(datetime string) (r *HTMLTagBuilder) {
 	return Tag("time").Attr("datetime", datetime)
 }
 
-//     "title": HTMLTitleElement;
+// Title "title": HTMLTitleElement;
 func Title(text string) (r *HTMLTagBuilder) {
 	return Tag("title").Text(text)
 }
 
-//     "tr": HTMLTableRowElement;
+// Tr "tr": HTMLTableRowElement;
 func Tr(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("tr").Children(children...)
+	return Tag("tr", children...)
 }
 
-//     "track": HTMLTrackElement;
+// Track "track": HTMLTrackElement;
 func Track(src string) (r *HTMLTagBuilder) {
 	return Tag("track").OmitEndTag().Attr("src", src)
 }
 
-//     "u": HTMLElement;
+// U "u": HTMLElement;
 func U(text string) (r *HTMLTagBuilder) {
 	return Tag("u").Text(text)
 }
 
-//     "ul": HTMLUListElement;
+// Ul "ul": HTMLUListElement;
 func Ul(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("ul").Children(children...)
+	return Tag("ul", children...)
 }
 
-//     "var": HTMLElement;
+// Var "var": HTMLElement;
 func Var(text string) (r *HTMLTagBuilder) {
 	return Tag("var").Text(text)
 }
 
-//     "video": HTMLVideoElement;
+// Video "video": HTMLVideoElement;
 func Video(children ...HTMLComponent) (r *HTMLTagBuilder) {
-	return Tag("video").Children(children...)
+	return Tag("video", children...)
 }
 
-//     "wbr": HTMLElement;
+// Wbr "wbr": HTMLElement;
 func Wbr() (r *HTMLTagBuilder) {
 	return Tag("wbr").OmitEndTag()
+}
+
+// Svg "svg": HTMLElement;
+func Svg(children ...HTMLComponent) (r *HTMLTagBuilder) {
+	return Tag("Svg", children...)
 }

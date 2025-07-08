@@ -3,46 +3,64 @@ package htmlgo
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"html"
 	"io"
+	"strings"
 )
 
 type RawHTML string
 
-func (s RawHTML) MarshalHTML(ctx context.Context) (r []byte, err error) {
-	r = []byte(s)
-	return
+func (s RawHTML) Write(ctx *Context) (err error) {
+	return ctx.WriteString(string(s))
 }
 
-func Text(text string) (r HTMLComponent) {
+func Text(text string) HTMLComponent {
 	return RawHTML(html.EscapeString(text))
 }
 
-func Textf(format string, a ...interface{}) (r HTMLComponent) {
+func Textf(format string, a ...interface{}) HTMLComponent {
 	return Text(fmt.Sprintf(format, a...))
 }
 
 type HTMLComponents []HTMLComponent
 
 func Components(comps ...HTMLComponent) HTMLComponents {
-	return HTMLComponents(comps)
+	return comps
 }
 
-func (hcs HTMLComponents) MarshalHTML(ctx context.Context) (r []byte, err error) {
-	buf := bytes.NewBuffer(nil)
-	for _, h := range hcs {
-		if h == nil {
-			continue
+func (l HTMLComponents) Write(ctx *Context) (err error) {
+	var (
+		leftSpace        = ctx.LeftSpace()
+		last, lastNonRaw HTMLComponent
+	)
+
+	_ = lastNonRaw
+
+	err = SimplifyE(l, func(child HTMLComponent) (err error) {
+		last = child
+		if !IsRaw(child) {
+			if !IsInline(child) || (lastNonRaw != nil && !IsInline(lastNonRaw)) {
+				if err = ctx.WriteString("\n" + leftSpace); err != nil {
+					return
+				}
+			}
+			lastNonRaw = child
 		}
-		var b []byte
-		b, err = h.MarshalHTML(ctx)
-		if err != nil {
-			return
-		}
-		buf.Write(b)
+		return child.Write(ctx)
+	})
+
+	if err != nil {
+		return
 	}
-	r = buf.Bytes()
+
+	if last != nil && !IsInline(last) {
+		if err = ctx.WriteString("\n"); err == nil && len(leftSpace) > 1 {
+			err = ctx.WriteString(leftSpace[1:])
+		}
+	}
+
 	return
 }
 
@@ -51,7 +69,7 @@ func Fprint(w io.Writer, root HTMLComponent, ctx context.Context) (err error) {
 		return
 	}
 	var b []byte
-	b, err = root.MarshalHTML(ctx)
+	b, err = Marshall(root, ctx)
 	if err != nil {
 		return
 	}
@@ -123,6 +141,11 @@ func SimplifyComponent(c HTMLComponent) HTMLComponent {
 	}
 }
 
+func IsRaw(c HTMLComponent) (ok bool) {
+	_, ok = c.(RawHTML)
+	return
+}
+
 func IsInline(c HTMLComponent) bool {
 	switch child := c.(type) {
 	case RawHTML:
@@ -137,4 +160,19 @@ func IsInline(c HTMLComponent) bool {
 		}
 	}
 	return false
+}
+
+func JSONString(v interface{}) (r string) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		panic(err)
+	}
+	r = string(b)
+	return
+}
+
+func EscapeAttr(str string) (r string) {
+	r = strings.Replace(str, "'", "&#39;", -1)
+	// r = strings.Replace(r, "\n", "", -1)
+	return
 }

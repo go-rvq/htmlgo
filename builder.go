@@ -1,8 +1,6 @@
 package htmlgo
 
 import (
-	"bytes"
-	"context"
 	"fmt"
 )
 
@@ -52,32 +50,6 @@ func (t *TagBuilder[T]) Dot() T {
 	return t.DOT
 }
 
-func (t *TagBuilder[T]) MarshalHTML(ctx context.Context) (r []byte, err error) {
-	buf := bufPool.Get().(*bytes.Buffer)
-	defer bufPool.Put(buf)
-	buf.Reset()
-
-	var (
-		c          = NewWriteContext(NewWriter(buf), ctx)
-		dotAny any = t.DOT
-		w, _       = dotAny.(interface{ Write(ctx *WriteContext) error })
-	)
-
-	if w != nil {
-		err = w.Write(c)
-	} else {
-		err = t.Write(c)
-	}
-
-	if err != nil {
-		return
-	}
-
-	r = make([]byte, buf.Len())
-	copy(r, buf.Bytes())
-	return
-}
-
-func (t *TagBuilder[T]) Write(ctx *WriteContext) error {
-	return t.HTMLTag.WriteToContext(ctx)
+func (t *TagBuilder[T]) Write(ctx *Context) error {
+	return t.HTMLTag.Write(ctx)
 }

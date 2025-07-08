@@ -23,7 +23,6 @@ var InlineTags = map[string]bool{
 	"output":   true,
 	"q":        true,
 	"samp":     true,
-	"script":   true,
 	"select":   true,
 	"small":    true,
 	"span":     true,

@@ -1,7 +1,5 @@
 package htmlgo
 
-import "context"
-
 type IfBuilder struct {
 	comps []HTMLComponent
 	set   bool
@@ -36,11 +34,11 @@ func (b *IfBuilder) Else(comps ...HTMLComponent) (r *IfBuilder) {
 	return b
 }
 
-func (b *IfBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) {
+func (b *IfBuilder) Write(ctx *Context) (_ error) {
 	if len(b.comps) == 0 {
 		return
 	}
-	return HTMLComponents(b.comps).MarshalHTML(ctx)
+	return HTMLComponents(b.comps).Write(ctx)
 }
 
 type IfFuncBuilder struct {
@@ -77,9 +75,9 @@ func (b *IfFuncBuilder) Else(f func() HTMLComponent) (r *IfFuncBuilder) {
 	return b
 }
 
-func (b *IfFuncBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) {
+func (b *IfFuncBuilder) Write(ctx *Context) (_ error) {
 	if b.f == nil {
 		return
 	}
-	return b.f().MarshalHTML(ctx)
+	return b.f().Write(ctx)
 }

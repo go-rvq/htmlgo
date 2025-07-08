@@ -12,21 +12,26 @@ also checkout full API documentation at: https://godoc.org/github.com/go-rvq/htm
 */
 package htmlgo
 
-import (
-	"context"
-)
-
 type HTMLComponent interface {
-	MarshalHTML(ctx context.Context) ([]byte, error)
+	Write(w *Context) (err error)
 }
 
-type ComponentFunc func(ctx context.Context) (r []byte, err error)
+type ComponentFunc func(ctx *Context) (err error)
 
-func (f ComponentFunc) MarshalHTML(ctx context.Context) (r []byte, err error) {
+func (f ComponentFunc) Write(ctx *Context) error {
 	return f(ctx)
 }
 
 type MutableAttrHTMLComponent interface {
 	HTMLComponent
 	SetAttr(k string, v interface{})
+}
+
+type ContainerHTMLComponent interface {
+	HTMLComponent
+	HasChilds() bool
+	Append(...HTMLComponent)
+	Prepend(...HTMLComponent)
+	GetChildren() HTMLComponents
+	SetChildren(HTMLComponents)
 }

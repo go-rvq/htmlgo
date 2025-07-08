@@ -2,97 +2,57 @@ package htmlgo
 
 import (
 	"context"
-	"fmt"
 	"strings"
 )
 
-type WriteContext struct {
+type Context struct {
 	Writer
 	Context context.Context
-	Depth   int
+	depth   int
 	writed  int
 }
 
-func NewWriteContext(w Writer, ctx context.Context) *WriteContext {
-	return &WriteContext{Writer: w, Context: ctx}
+func (ctx *Context) Value(name any) interface{} {
+	return ctx.Context.Value(name)
 }
 
-func (c *WriteContext) LeftSpace() string {
-	return strings.Repeat("\t", c.Depth)
+func NewContext(w Writer, ctx context.Context) *Context {
+	return &Context{Writer: w, Context: ctx}
 }
 
-func (c *WriteContext) WriteLeftSpace() error {
-	return c.WriteString(c.LeftSpace())
+func (ctx *Context) Depth() int {
+	return ctx.depth
 }
 
-func (c *WriteContext) Sub() func() {
-	c.Depth++
-	return func() {
-		c.Depth--
-	}
+func (ctx *Context) LeftSpace() string {
+	return strings.Repeat("\t", ctx.depth)
 }
 
-func (c *WriteContext) Enter(f func() (err error)) error {
-	c.Depth++
-	defer func() {
-		c.Depth--
-	}()
+func (ctx *Context) WriteLeftSpace() error {
+	return ctx.WriteString(ctx.LeftSpace())
+}
+
+func (ctx *Context) Leave() {
+	ctx.depth--
+}
+
+func (ctx *Context) Enter(f func() (err error)) error {
+	defer ctx.EnterLeave()
 	return f()
 }
 
-func (c *WriteContext) WriteChildren(cs ...HTMLComponent) (err error) {
-	c.Depth++
-	defer func() {
-		c.Depth--
-	}()
-
-	var (
-		leftSpace = c.LeftSpace()
-		last      HTMLComponent
-	)
-
-	err = SimplifyE(HTMLComponents(cs), func(child HTMLComponent) (err error) {
-		last = child
-		if !IsInline(child) {
-			c.WriteString("\n" + leftSpace)
-		}
-		return c.WriteComponent(child)
-	})
-
-	if err != nil {
-		return
+func (ctx *Context) EnterLeave() func() {
+	ctx.depth++
+	return func() {
+		ctx.depth--
 	}
-
-	if last != nil && !IsInline(last) {
-		c.WriteString("\n" + leftSpace[1:])
-	}
-
-	return
 }
 
-func (c *WriteContext) WriteAny(comp any) error {
-	switch t := comp.(type) {
-	case ComponentContextWriter:
-		return t.Write(c)
-	case *HTMLTagBuilder:
-		return t.WriteToContext(c)
-	case HTMLComponent:
-		var (
-			b   []byte
-			err error
-		)
-		if b, err = t.MarshalHTML(c.Context); err != nil {
-			return err
-		}
-		return c.Write(b)
-	}
-	return fmt.Errorf("WriteContext.WriteAny: unknown component type %T", comp)
+func (ctx *Context) WriteChildren(l HTMLComponents) (err error) {
+	defer ctx.EnterLeave()()
+	return l.Write(ctx)
 }
 
-func (c *WriteContext) WriteComponent(comp HTMLComponent) error {
-	return c.WriteAny(comp)
-}
-
-type ComponentContextWriter interface {
-	Write(w *WriteContext) (err error)
+func (ctx *Context) Write(comp HTMLComponent) (err error) {
+	return comp.Write(ctx)
 }

@@ -2,6 +2,7 @@ package htmlgo_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	. "github.com/go-rvq/htmlgo"
@@ -20,7 +21,7 @@ var htmltagCases = []struct {
 		),
 		expected: `
 <div>
-<div>Hello</div>
+	<div>Hello</div>
 </div>
 `,
 	},
@@ -35,7 +36,7 @@ var htmltagCases = []struct {
 		),
 		expected: `
 <div>
-<div class='menu' id='menu-id'>Hello</div>
+	<div class='menu' id='menu-id'>Hello</div>
 </div>
 `,
 	},
@@ -49,7 +50,7 @@ var htmltagCases = []struct {
 		),
 		expected: `
 <div>
-<div class='menu' id='the><&"&#39;-menu'>Hello</div>
+	<div class='menu' id='the><&"&#39;-menu'>Hello</div>
 </div>
 `,
 	},
@@ -57,11 +58,11 @@ var htmltagCases = []struct {
 
 func TestHtmlTag(t *testing.T) {
 	for _, c := range htmltagCases {
-		r, err := c.tag.MarshalHTML(context.TODO())
+		r, err := Marshall(c.tag, context.TODO())
 		if err != nil {
 			panic(err)
 		}
-		diff := testingutils.PrettyJsonDiff(c.expected, string(r))
+		diff := testingutils.PrettyJsonDiff(strings.TrimSpace(c.expected), string(r))
 		if len(diff) > 0 {
 			t.Error(c.name, diff)
 		}

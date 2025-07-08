@@ -16,6 +16,10 @@ type WriterImpl struct {
 	w io.Writer
 }
 
+func (w *WriterImpl) Writer() io.Writer {
+	return w.w
+}
+
 func (w *WriterImpl) WriteString(s string) (err error) {
 	_, err = w.w.Write([]byte(s))
 	return
@@ -31,54 +35,29 @@ func (w *WriterImpl) Write(b []byte) (err error) {
 	return
 }
 
-func NewWriter(w io.Writer) Writer {
+func ToWriter(w io.Writer) Writer {
+	var wa any = w
+	if wi, _ := wa.(Writer); wi != nil {
+		return wi
+	}
 	return &WriterImpl{w: w}
 }
 
-func WriteToContext(ctx *WriteContext, comp ...HTMLComponent) (err error) {
-	return SimplifyE(HTMLComponents(comp), ctx.WriteComponent)
-}
-
 func Write(w io.Writer, comp ...HTMLComponent) (err error) {
-	return WriteToContext(NewWriteContext(NewWriter(w), context.Background()), comp...)
+	return HTMLComponents(comp).Write(NewContext(ToWriter(w), context.Background()))
 }
 
-func EnterWriteContext(w io.Writer, f func(ctx *WriteContext) error) (err error) {
-	return f(NewWriteContext(NewWriter(w), context.Background()))
+func Enter(w io.Writer, f func(ctx *Context) error) (err error) {
+	return f(NewContext(ToWriter(w), context.Background()))
 }
 
-func WriteSliceToContext[C HTMLComponent](ctx *WriteContext, comp []C) (err error) {
-	var ca any
-	for _, c := range comp {
-		ca = c
-		if err = SimplifyE(ca.(HTMLComponent), func(c HTMLComponent) (err error) {
-			if err = ctx.WriteComponent(c); err != nil {
-				return
-			}
-			return ctx.WriteByte('\n')
-		}); err != nil {
-			return
-		}
-	}
-	return
-}
-
-func WriteSlice[C HTMLComponent](w io.Writer, comp []C) (err error) {
-	return WriteSliceToContext(NewWriteContext(NewWriter(w), context.Background()), comp)
-}
-
-func Marshall(c any, ctx context.Context) (_ []byte, err error) {
+func Marshall(comp HTMLComponent, ctx context.Context) (_ []byte, err error) {
 	var b strings.Builder
-	switch t := c.(type) {
-	case ComponentContextWriter:
-		err = t.Write(NewWriteContext(NewWriter(&b), ctx))
-		return []byte(b.String()), err
-	case HTMLComponent:
-		var b []byte
-		if b, err = t.MarshalHTML(ctx); err != nil {
-			return
-		}
-		return b, err
-	}
-	return
+	err = comp.Write(NewContext(ToWriter(&b), ctx))
+	return []byte(b.String()), err
+}
+
+func MarshallString(c HTMLComponent, ctx context.Context) (string, error) {
+	b, err := Marshall(c, ctx)
+	return string(b), err
 }

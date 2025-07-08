@@ -1,14 +1,10 @@
 package htmlgo
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
 	"fmt"
 	"html"
 	"slices"
 	"strings"
-	"sync"
 )
 
 type Attr struct {
@@ -59,8 +55,24 @@ type HTMLTagBuilder struct {
 	Attrs        Attrs
 	Styles       []string
 	ClassNames   []string
-	Childs       []HTMLComponent
+	Childs       HTMLComponents
 	IsInLine     bool
+}
+
+func (b *HTMLTagBuilder) Append(comp ...HTMLComponent) {
+	b.Childs = append(b.Childs, comp...)
+}
+
+func (b *HTMLTagBuilder) Prepend(comp ...HTMLComponent) {
+	b.Childs = append(comp, b.Childs...)
+}
+
+func (b *HTMLTagBuilder) GetChildren() HTMLComponents {
+	return b.Childs
+}
+
+func (b *HTMLTagBuilder) SetChildren(comps HTMLComponents) {
+	b.Childs = comps
 }
 
 func Tag(tag string, child ...HTMLComponent) *HTMLTagBuilder {
@@ -178,7 +190,7 @@ func (b *HTMLTagBuilder) Data(vs ...string) (r *HTMLTagBuilder) {
 	return b
 }
 
-func (b *HTMLTagBuilder) Id(v string) (r *HTMLTagBuilder) {
+func (b *HTMLTagBuilder) ID(v string) (r *HTMLTagBuilder) {
 	b.Attr("id", v)
 	return b
 }
@@ -324,13 +336,7 @@ func (b *HTMLTagBuilder) PrependChildren(c ...HTMLComponent) (r *HTMLTagBuilder)
 	return b
 }
 
-var bufPool = sync.Pool{
-	New: func() any {
-		return &bytes.Buffer{}
-	},
-}
-
-func (b *HTMLTagBuilder) WriteToContext(ctx *WriteContext) (err error) {
+func (b *HTMLTagBuilder) Write(ctx *Context) (err error) {
 	ctx.writed++
 
 	class := strings.TrimSpace(strings.Join(b.ClassNames, " "))
@@ -375,9 +381,9 @@ func (b *HTMLTagBuilder) WriteToContext(ctx *WriteContext) (err error) {
 			continue
 		}
 
-		seg := fmt.Sprintf(`%s='%s'`, escapeAttr(at.Key), escapeAttr(val))
+		seg := fmt.Sprintf(`%s='%s'`, EscapeAttr(at.Key), EscapeAttr(val))
 		if isBool && boolVal {
-			seg = escapeAttr(at.Key)
+			seg = EscapeAttr(at.Key)
 		}
 		attrSegs = append(attrSegs, seg)
 	}
@@ -392,7 +398,7 @@ func (b *HTMLTagBuilder) WriteToContext(ctx *WriteContext) (err error) {
 	}
 
 	if !b.IsOmitEndTag {
-		if err = ctx.WriteChildren(b.Childs...); err != nil {
+		if err = ctx.WriteChildren(b.Childs); err != nil {
 			return
 		}
 		if err = ctx.WriteString(fmt.Sprintf("</%s>", b.TagName)); err != nil {
@@ -402,31 +408,6 @@ func (b *HTMLTagBuilder) WriteToContext(ctx *WriteContext) (err error) {
 	return
 }
 
-func (b *HTMLTagBuilder) MarshalHTML(ctx context.Context) (r []byte, err error) {
-	buf := bufPool.Get().(*bytes.Buffer)
-	defer bufPool.Put(buf)
-	buf.Reset()
-
-	if err = b.WriteToContext(NewWriteContext(NewWriter(buf), ctx)); err != nil {
-		return
-	}
-
-	r = make([]byte, buf.Len())
-	copy(r, buf.Bytes())
-	return
-}
-
-func JSONString(v interface{}) (r string) {
-	b, err := json.Marshal(v)
-	if err != nil {
-		panic(err)
-	}
-	r = string(b)
-	return
-}
-
-func escapeAttr(str string) (r string) {
-	r = strings.Replace(str, "'", "&#39;", -1)
-	// r = strings.Replace(r, "\n", "", -1)
-	return
+func (b *HTMLTagBuilder) String() string {
+	return "<" + b.TagName + ">"
 }
