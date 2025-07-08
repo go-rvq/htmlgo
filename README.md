@@ -27,7 +27,7 @@ also checkout full API documentation at: https://godoc.org/github.com/go-rvq/htm
 - [func IsInline\(c HTMLComponent\) bool](<#IsInline>)
 - [func IsRaw\(c HTMLComponent\) \(ok bool\)](<#IsRaw>)
 - [func JSONString\(v any\) \(r string\)](<#JSONString>)
-- [func Marshall\(comp HTMLComponent, ctx context.Context\) \(\_ \[\]byte, err error\)](<#Marshall>)
+- [func Marshal\(comp HTMLComponent, ctx context.Context\) \(\_ \[\]byte, err error\)](<#Marshal>)
 - [func MarshallString\(c HTMLComponent, ctx context.Context\) \(string, error\)](<#MarshallString>)
 - [func MustString\(root HTMLComponent, ctx context.Context\) string](<#MustString>)
 - [func NewTag\[T TagBuilderGetter\[T\]\]\(dot T, name string, children ...HTMLComponent\) T](<#NewTag>)
@@ -391,11 +391,11 @@ func JSONString(v any) (r string)
 
 
 
-<a name="Marshall"></a>
-## func [Marshall](<https://github.com/go-rvq/htmlgo/blob/main/io.go#L54>)
+<a name="Marshal"></a>
+## func [Marshal](<https://github.com/go-rvq/htmlgo/blob/main/io.go#L54>)
 
 ```go
-func Marshall(comp HTMLComponent, ctx context.Context) (_ []byte, err error)
+func Marshal(comp HTMLComponent, ctx context.Context) (_ []byte, err error)
 ```
 
 

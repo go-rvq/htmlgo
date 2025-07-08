@@ -51,13 +51,13 @@ func Enter(w io.Writer, f func(ctx *Context) error) (err error) {
 	return f(NewContext(ToWriter(w), context.Background()))
 }
 
-func Marshall(comp HTMLComponent, ctx context.Context) (_ []byte, err error) {
+func Marshal(comp HTMLComponent, ctx context.Context) (_ []byte, err error) {
 	var b strings.Builder
 	err = comp.Write(NewContext(ToWriter(&b), ctx))
 	return []byte(b.String()), err
 }
 
 func MarshallString(c HTMLComponent, ctx context.Context) (string, error) {
-	b, err := Marshall(c, ctx)
+	b, err := Marshal(c, ctx)
 	return string(b), err
 }

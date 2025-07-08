@@ -58,7 +58,7 @@ var htmltagCases = []struct {
 
 func TestHtmlTag(t *testing.T) {
 	for _, c := range htmltagCases {
-		r, err := Marshall(c.tag, context.TODO())
+		r, err := Marshal(c.tag, context.TODO())
 		if err != nil {
 			panic(err)
 		}

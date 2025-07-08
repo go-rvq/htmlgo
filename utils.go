@@ -69,7 +69,7 @@ func Fprint(w io.Writer, root HTMLComponent, ctx context.Context) (err error) {
 		return
 	}
 	var b []byte
-	b, err = Marshall(root, ctx)
+	b, err = Marshal(root, ctx)
 	if err != nil {
 		return
 	}
