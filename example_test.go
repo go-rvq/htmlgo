@@ -368,19 +368,19 @@ func ExampleTag_withMutipleTypeAttrs() {
 		Name  string
 		Count int
 	}
-	comp := Div(
-		Input("username").
-			Type("checkbox").
-			Attr("checked", true).
-			Attr("more-data", &MoreData{Name: "felix", Count: 100}).
-			Attr("max-length", 10),
-		Input("username2").
-			Type("checkbox").
-			Attr("checked", false),
-	)
+	comp := Div().
+		Attr("true-attr", true).
+		Attr("false-attr", false).
+		Attr("int-attr", 1).
+		Attr("float-attr", 123.456).
+		Attr("str-attr", "the string value").
+		Attr("safe-str-value", SafeAttr(`{the shafe value}`)).
+		Attr("byte-attr", []byte("byte value")).
+		Attr("rune-attr", []rune("rune value")).
+		Attr("struct-attr", &MoreData{Name: "felix", Count: 100})
 	Fprint(os.Stdout, comp, context.TODO())
 	// Output:
-	// <div><input name='username' type='checkbox' checked more-data='{"Name":"felix","Count":100}' max-length='10'><input name='username2' type='checkbox'></div>
+	// <div true-attr int-attr='1' float-attr='123.456000' str-attr='the string value' safe-str-value={the shafe value} byte-attr='byte value' rune-attr='rune value' struct-attr='{"Name":"felix","Count":100}'></div>
 }
 
 /*
@@ -419,22 +419,4 @@ func ExampleTag_iff() {
 	// <div>
 	//	<div>No person named Leon</div>
 	// </div>
-}
-
-/*
-An example show how to use Tag with supported attr values
-*/
-func ExampleTag_withAttrs() {
-	comp := Div().
-		Attr("true-attr", true).
-		Attr("false-attr", false).
-		Attr("int-attr", 1).
-		Attr("float-attr", 123.456).
-		Attr("str-attr", "the string value").
-		Attr("safe-str-value", SafeAttr(`{the shafe value}`)).
-		Attr("byte-attr", []byte("byte value")).
-		Attr("rune-attr", []rune("rune value"))
-	Fprint(os.Stdout, comp, context.TODO())
-	// Output:
-	// <div true-attr int-attr='1' float-attr='123.456000' str-attr='the string value' safe-str-value={the shafe value} byte-attr='byte value' rune-attr='rune value'></div>
 }
